@@ -11,6 +11,7 @@ import org.datasyslab.geospark.serde.GeoSparkKryoRegistrator
 import org.datasyslab.geospark.spatialOperator.RangeQuery
 import org.datasyslab.geospark.spatialRDD.{PointRDD, PolygonRDD}
 import org.datasyslab.geosparkviz.core.Serde.GeoSparkVizKryoRegistrator
+import org.example.SpatialRDDUtil
 
 /**
  * @author ${user.name}
@@ -53,28 +54,10 @@ object App {
     //    val spatialRDD = WktReader.readToGeometryRDD(sc, inputLocation, wktColumn, allowTopologyInvalidGeometries, skipSyntaxInvalidGeometries)
 
     val shapefileInputLocation = "/home/yuanjk/data/shp/places"
-    //If the file you are reading contains non-ASCII characters you'll need to explicitly set the encoding
-    System.setProperty("geospark.global.charset", "utf8")
 
-    val spatialRDD = ShapefileReader.readToGeometryRDD(sparkSession.sparkContext, shapefileInputLocation)
+    val spatialRDD = SpatialRDDUtil.readShpFile(sparkSession, shapefileInputLocation)
 
-    println("field names: " + spatialRDD.fieldNames)
-    println("first geometry: " + spatialRDD.rawSpatialRDD.rdd.first())
-    println("CRS transformation: " + spatialRDD.getCRStransformation)
-    spatialRDD.analyze()
-    println("boundary envelope: " + spatialRDD.boundaryEnvelope)
-
-    val rangeQueryWindow = new Envelope(117.050, 118.490, 38.367, 39.450)
-    val considerBoundaryIntersection = false // Only return gemeotries fully covered by the window
-    val usingIndex = false
-    var queryResult = RangeQuery.SpatialRangeQuery(spatialRDD, rangeQueryWindow, considerBoundaryIntersection, usingIndex)
-
-    println("results size: " + queryResult.collect().size())
-
-    queryResult.rdd.foreach(f => println(f))
-
-
-    println("有两种办法可以修改")
+    SpatialRDDUtil.envelopeQuery(117.050, 118.490, 38.367, 39.450, spatialRDD)
 
   }
 
