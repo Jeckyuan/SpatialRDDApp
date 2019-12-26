@@ -11,7 +11,7 @@ import org.datasyslab.geospark.serde.GeoSparkKryoRegistrator
 import org.datasyslab.geospark.spatialOperator.RangeQuery
 import org.datasyslab.geospark.spatialRDD.{PointRDD, PolygonRDD}
 import org.datasyslab.geosparkviz.core.Serde.GeoSparkVizKryoRegistrator
-import org.example.SpatialRDDUtil
+import org.example.{SpatialRDDUtil, SqlDataFrameUtil}
 
 /**
  * @author ${user.name}
@@ -59,6 +59,7 @@ object App {
 
     SpatialRDDUtil.envelopeQuery(117.050, 118.490, 38.367, 39.450, spatialRDD)
 
+    SqlDataFrameUtil.envelopeQuery(117.050, 38.367, 118.490, 39.450, spatialRDD, sparkSession)
   }
 
 }
