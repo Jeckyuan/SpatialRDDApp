@@ -1,15 +1,8 @@
 package org.sia.chapter03App
 
-import com.vividsolutions.jts.geom.Envelope
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.SparkConf
 import org.apache.spark.serializer.KryoSerializer
 import org.apache.spark.sql.SparkSession
-import org.datasyslab.geospark.enums.FileDataSplitter
-import org.datasyslab.geospark.formatMapper.WktReader
-import org.datasyslab.geospark.formatMapper.shapefileParser.ShapefileReader
-import org.datasyslab.geospark.serde.GeoSparkKryoRegistrator
-import org.datasyslab.geospark.spatialOperator.RangeQuery
-import org.datasyslab.geospark.spatialRDD.{PointRDD, PolygonRDD}
 import org.datasyslab.geosparkviz.core.Serde.GeoSparkVizKryoRegistrator
 import org.example.{SpatialRDDUtil, SqlDataFrameUtil}
 
@@ -26,7 +19,6 @@ object App {
     conf.set("spark.serializer", classOf[KryoSerializer].getName)
     //    conf.set("spark.kryo.registrator", classOf[GeoSparkKryoRegistrator].getName)
     conf.set("spark.kryo.registrator", classOf[GeoSparkVizKryoRegistrator].getName)
-
 
     val sparkSession = SparkSession.builder().config(conf).getOrCreate()
 
